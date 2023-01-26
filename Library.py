@@ -12,7 +12,7 @@ class LibraryItem:
 
         self._library_item_id = library_item_id #initializes lib item id
         self._title = title #initializes title of book to be checked out
-        self._location= "on_shelf" #all books to be checked out start on the shelf
+        self._location= "ON_SHELF" #all books to be checked out start on the shelf
         self._checked_out_by = None #initialized checked out book to none
         self._requested_by = None #initialized requests to none
         self._date_checked_out= 0 #sets date of check out to zero (books, albums, films all have different check out lengths)
@@ -241,7 +241,7 @@ class Library:
             if p.get_patron_id() != patron_id: #checks for patron in members
                 return "patron not found"
             p.amend_fine.remove(amount_paid) #removes total amount paid from existing fine balance
-            return "payment succesful"
+        return "payment succesful"
 
     def increment_current_date(self):
         """increases patron's fines by 10 cents for each overdue day"""
@@ -252,10 +252,31 @@ class Library:
                     p.amend_fine(+0.10)
 
 
+b1 = Book("345", "Phantom Tollbooth", "Juster")
+b2= Book("666", "Persuasion", "Jane Austen")
+print(b1.get_author())
+print(b2.get_author())
 
+p1 = Patron("abc", "Felicity")
+p2 = Patron("bcd", "Waldo")
 
+lib = Library()
+lib.add_library_item(b1)
+lib.add_library_item(b2)
+lib.add_patron(p1)
+lib.add_patron(p2)
 
-
+lib.check_out_library_item("bcd", "456")
+for _ in range(7):
+    lib.increment_current_date()  # 7 days pass
+    lib.check_out_library_item("abc", "567")
+    loc = b1.get_location()
+    lib.request_library_item("abc", "456")
+for _ in range(57):
+    lib.increment_current_date()  # 57 days pass
+    p2_fine = p2.get_fine_amount()
+    lib.pay_fine("bcd", p2_fine)
+    lib.return_library_item("456")
 
 
 
