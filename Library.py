@@ -248,7 +248,7 @@ class Library:
         self._current_date +=1 #adds 1 day each day from check out
         for p in self._members:
             for i in p.get_checked_out_items():
-                if self._current_date - i.get_date_checked_out() > i.get_check_out_length():
+                if (self._current_date - i.get_date_checked_out()) > i.get_check_out_length():
                     p.amend_fine(+0.10)
 
 
